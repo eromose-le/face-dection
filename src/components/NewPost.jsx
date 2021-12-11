@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as faceapi from 'face-api.js';
 
 const NewPost = ({ image }) => {
   const { url, width, height } = image;
+  const [faces, setFaces] = useState([]);
 
   const imgRef = useRef();
   const canvasRef = useRef();
@@ -13,8 +14,17 @@ const NewPost = ({ image }) => {
       imgRef.current,
       new faceapi.TinyFaceDetectorOptions()
     );
+    setFaces(detections.map((d) => Object.values(d.box)));
 
     console.log(detections);
+    console.log(faces);
+  };
+
+  const enter = () => {
+    const ctx = canvasRef.current.getContext('2d');
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'yellow';
+    faces.map((face) => ctx.strokeRect(...face));
   };
 
   useEffect(() => {
@@ -34,7 +44,20 @@ const NewPost = ({ image }) => {
     <div className="container">
       <div className="left" style={{ width, height }}>
         <img ref={imgRef} crossOrigin="anonymous" src={url} alt="" />
-        <canvas ref={canvasRef} width={width} height={height}></canvas>
+        <canvas
+          onMouseEnter={enter}
+          ref={canvasRef}
+          width={width}
+          height={height}
+        ></canvas>
+        {faces.map((face, i) => (
+          <input
+            style={{ left: face[0], top: face[1] + face[3] + 5 }}
+            placeholder="Tag a friend"
+            key={i}
+            className="friendInput"
+          />
+        ))}
       </div>
       <div className="right">
         <h1>Share your post</h1>
