@@ -26,7 +26,7 @@ function App() {
       height: 650
     });
 
-    // Position canvas from Img
+    // Draw canvas from Img
     faceapi.draw.drawDetections(canvasRef.current, resized);
   };
 
