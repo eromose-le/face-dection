@@ -26,8 +26,10 @@ function App() {
       height: 650
     });
 
-    // Draw canvas from Img
+    // Draw canvas from Img using various Featured EndPoints
     faceapi.draw.drawDetections(canvasRef.current, resized);
+    faceapi.draw.drawFaceExpressions(canvasRef.current, resized);
+    faceapi.draw.drawFaceLandmarks(canvasRef.current, resized);
   };
 
   useEffect(() => {
