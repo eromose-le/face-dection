@@ -9,28 +9,12 @@ const NewPost = ({ image }) => {
 
   const handleImage = async () => {
     // Pass img to model
-    const detections = await faceapi
-      .detectAllFaces(imgRef.current, new faceapi.TinyFaceDetectorOptions())
-      .withFaceLandmarks()
-      .withFaceExpressions();
+    const detections = await faceapi.detectAllFaces(
+      imgRef.current,
+      new faceapi.TinyFaceDetectorOptions()
+    );
 
-    canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(imgRef.current);
-    // Position canvas
-    faceapi.matchDimensions(canvasRef.current, {
-      width,
-      height
-    });
-
-    // Resize canvas
-    const resized = faceapi.resizeResults(detections, {
-      width,
-      height
-    });
-
-    // Draw canvas from Img using various Featured EndPoints
-    faceapi.draw.drawDetections(canvasRef.current, resized);
-    faceapi.draw.drawFaceExpressions(canvasRef.current, resized);
-    faceapi.draw.drawFaceLandmarks(canvasRef.current, resized);
+    console.log(detections);
   };
 
   useEffect(() => {
