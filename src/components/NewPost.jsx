@@ -4,6 +4,7 @@ import * as faceapi from 'face-api.js';
 const NewPost = ({ image }) => {
   const { url, width, height } = image;
   const [faces, setFaces] = useState([]);
+  const [friends, setFriends] = useState([]);
 
   const imgRef = useRef();
   const canvasRef = useRef();
@@ -40,6 +41,12 @@ const NewPost = ({ image }) => {
 
     imgRef.current && loadModels();
   }, []);
+
+  const addFriend = (e) => {
+    setFriends((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  console.log(friends);
+
   return (
     <div className="container">
       <div className="left" style={{ width, height }}>
@@ -52,10 +59,12 @@ const NewPost = ({ image }) => {
         ></canvas>
         {faces.map((face, i) => (
           <input
+            name={`input${i}`}
             style={{ left: face[0], top: face[1] + face[3] + 5 }}
             placeholder="Tag a friend"
             key={i}
             className="friendInput"
+            onChange={addFriend}
           />
         ))}
       </div>
@@ -66,6 +75,11 @@ const NewPost = ({ image }) => {
           placeholder="What's on your mind?"
           className="rightInput"
         />
+        {friends && (
+          <span className="friends">
+            with <span className="name">{Object.values(friends) + ' '}</span>
+          </span>
+        )}
         <button className="rightButton">Send</button>
       </div>
     </div>
